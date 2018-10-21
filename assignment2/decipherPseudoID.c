@@ -13,8 +13,10 @@ Concatenate the code and a sample output for your ID to a text file under a2/par
 */
 #include <stdio.h> //includes printf
 #include <stdlib.h>
+#include <math.h>
 #define BSIZE 128
 
+int computePseudo(const float id, const float rank);
 int main (int argc, char* argv[]){
     char* input = (char *) malloc(1); //char * can hold a string, could change to char[]
     //malloc(1) is enough memory for ~26 chars, more than enough for the school id.
@@ -35,8 +37,16 @@ int main (int argc, char* argv[]){
     highRank = atoi(input);
     printf("Heres the input: %i\n", highRank);
     
+    int i = 0;
+    for(i =0; i <= highRank; i = i+1){
+        printf("%i ",computePseudo(realID, i));
+        printf("%i\n",i);
+    }
 
     free(input);
     input = NULL;
 }
 
+int computePseudo(const float id, const float rank){
+    return ceil((id/2.5+rank))*2.0;
+}
