@@ -18,33 +18,40 @@ Concatenate the code and a sample output for your ID to a text file under a2/par
 
 int computePseudo(const float id, const float rank);
 int main (int argc, char* argv[]){
-    char* input = (char *) malloc(1); //char * can hold a string, could change to char[]
-    //malloc(1) is enough memory for ~26 chars, more than enough for the school id.
     int realID = 0;
     int lowRank = 0;
     int highRank = 0;
+    if(argc == 4){ //first char* is null? probably points to self or callback.
+        realID = atoi(argv[1]);
+        lowRank = atoi(argv[2]);
+        highRank = atoi(argv[3]);
+    }
+    else{
 
-    printf("Please Enter your schoold ID: ");
-    scanf("%s", input);
-    realID = atoi(input);
-    
-    printf("Please Enter the low rank value: ");
-    scanf("%s", input);
-    lowRank = atoi(input);
+        char* input = (char *) malloc(1); //char * can hold a string, could change to char[]
+        //malloc(1) is enough memory for ~26 chars, more than enough for the school id.
+        printf("Please Enter your schoold ID: ");
+        scanf("%s", input);
+        realID = atoi(input);
+        
+        printf("Please Enter the low rank value: ");
+        scanf("%s", input);
+        lowRank = atoi(input);
 
-    printf("Please enter the high rank value: ");
-    scanf("%s", input);
-    highRank = atoi(input);
-    printf("Heres the input: %i\n", highRank);
-    
+        printf("Please enter the high rank value: ");
+        scanf("%s", input);
+        highRank = atoi(input);
+        printf("Heres the input: %i\n", highRank);
+        free(input);
+        input = NULL;
+    }
     int i = 0;
     for(i =0; i <= highRank; i = i+1){
         printf("%i ",computePseudo(realID, i));
         printf("%i\n",i);
     }
 
-    free(input);
-    input = NULL;
+    
 }
 
 int computePseudo(const float id, const float rank){
