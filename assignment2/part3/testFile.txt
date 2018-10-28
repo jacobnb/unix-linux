@@ -1,0 +1,2 @@
+this file is here so that the program can count the number
+of text lines and words in the filename(s)
