@@ -11,7 +11,7 @@ countln.o: countln.c
 clean:
 	rm countln.o countln
 
-#not sure why this causes an error, but from everything I've read online it's a bad idea to include a run target in make.
+#not sure why this causes an error, but from everything I've read online it's a bad idea to include a run target in make. Additionally I couldn't find an example in the provided code of 'run'
 #usage: make run ARGS=filename
 run: countln 
 	./countln $(ARGS)

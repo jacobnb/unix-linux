@@ -1,2 +1,11 @@
 this file is here so that the program can count the number
 of text lines and words in the filename(s)
+Here are some more lines so that I can see how many chars are read in <37
+38 Here are another ten words for you to read
+48 Here are another ten words for you to read
+58 Here are another ten words for you to read
+68 Here are another ten words for you to read
+78 Here are another ten words for you to read
+88 Here are another ten words for you to read
+98 Here are another ten words for you to read
+108 Here are another ten words for you to read

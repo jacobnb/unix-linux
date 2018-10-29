@@ -14,7 +14,6 @@ Concatenate the code and a sample output for your ID to a text file under a2/par
 #include <stdio.h> //includes printf
 #include <stdlib.h>
 #include <math.h>
-#define BSIZE 128
 
 int computePseudo(const float id, const float rank);
 int main (int argc, char* argv[]){

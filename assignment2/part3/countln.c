@@ -7,10 +7,13 @@ read() into buffer, scan buffer, keep track of lines and words.*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
-#define BSIZE 128 /*should be enough for 3k+ chars */
+#include <unistd.h>
+#include <string.h>
+#define BSIZE 4000 /*enough buffer for 4k chars*/
 
-void scan(int fid);
-
+void scan(int fid); /*load and scan info from a file*/
+void usage(); /*print usage information*/
+void myPrint(char* toPrint); /*print data modeled from example projects. */
 /* Global Vars */
 char fileBuf[BSIZE + 1];
 int linesOfText=0;
@@ -25,24 +28,33 @@ int main(int argc, char* argv[]){
 		else
 			scan(fid);
 	} 
+
+/*maybe try to concatenate?*/
+	print("Lines of text: " + linesOfText + "\n");
+	print("Words        : " + wordsNo + "n");
 	return 0;
 }
-/*to print 
-msg = (char*)strdup("Usage: shlnno filename\n");
-		write(STDOUT_FILENO, msg, strlen(msg));
-		free(msg);
-*/
 
 
+void myPrint(char* toPrint){
+	write(STDOUT_FILENO, toPrint, strlen(toPrint));
+	/*Don't need to free toPrint b/c it breaks the program*/
+}
 void scan(int fid){
 	ssize_t nbytes; /*for read()*/
+	int i;
+	char c; /*character to avoid accessing array element repeatedly. not sure if faster */
 	/*read() into buffer scan buffer, move to next*/
-	nbytes = read(fd, fileBuf, BSIZE);
-	if(nbytes ==0){
-		/*eof*/
-	break;
+	while(1){ 	
+		nbytes = read(fid, fileBuf, BSIZE);
+		if(nbytes ==0)/*eof*/
+			return;
+		for(i = 0; fileBuf[i] != '\0'; i++){
+			c = (char)fileBuf[i]; 
+			if(c == ' ' || c == '\n' || c == '\r' || c == '\t')
+				wordsNo++;
+			if(c == '\n')
+				linesOfText++;
+		}
 	}
-	
-
-
 }
