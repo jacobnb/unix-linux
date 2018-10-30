@@ -47,7 +47,7 @@ void scan(int fid){
 	int previousCharNotSpace = 0;
 	while(1){ 	
 		nbytes = read(fid, fileBuf, BSIZE);
-		if(nbytes ==0)/*eof*/
+		if(nbytes == 0)/*eof*/
 			return;
 		for(i = 0; fileBuf[i] != '\0'; i++){
 			c = (char)fileBuf[i]; 

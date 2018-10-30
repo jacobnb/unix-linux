@@ -1,0 +1,77 @@
+** find / \( -type f -o -type d \) -perm -02 -ls **
+find / = find all files starting current location
+-type f = of type file
+-o = or
+-type d = type directory
+-perm = files permission bits are set 
+-02 = write
+-ls = list current file in ls -dils format on standard output
+
+
+/tmp is safe b/c sticky bit set on it. (only owner or root may remove the file)
+and because the owner (or root) can set the permissions on any file they create.
+
+
+** SUID / SGID **
+Find all suid and sgid programs
+find / -perm /6000
+
+This command works, but there is a lot of noise. To remove some of it, redirect the error stream into the out stream and use grep -v to filter out lines with Permission Denied.
+find / -perm /6000 2>&1 -ls | grep -v "Permission denied" 
+
+** SUID / SGID owned by root:root **
+73275   32 -rwsr-xr-x   1 root     root        32008 Apr 11  2018 /usr/bin/fusermount
+Mount and create FUSE filesystems. it makes sense that a non-privileged user should be able to access this, and that it requires root permissions to run.
+370003   60 -rwsr-xr-x   1 root     root        61416 May  9 09:48 /usr/bin/ksu
+Kerberized super-user. It makes sense that su needs root permissions to adjust the user ID of a non-privileged user.
+228153   28 -rwsr-xr-x   1 root     root        27832 Jun 10  2014 /usr/bin/passwd
+Change password. It makes sense that a non-privileged user can change their own password, and that changing a password requires root permissions.
+419570   24 -rws--x--x   1 root     root        24048 Aug 16 14:47 /usr/bin/chfn
+Change user information. It makes sense that a non-privileged user can change their personal information and that changing stored information requires root permissions.
+419573   24 -rws--x--x   1 root     root        23960 Aug 16 14:47 /usr/bin/chsh
+Change user login shell. It makes sense that a non-privileged user can change their own shell, and that doing this requires root permissions
+398276   64 -rwsr-xr-x   1 root     root        64240 Nov  5  2016 /usr/bin/chage
+Change user password expiration information. It makes sense that a non-privileged user can change their password expiration date if allowed, and that doing this requires root permissions.
+398277   80 -rwsr-xr-x   1 root     root        78216 Nov  5  2016 /usr/bin/gpasswd
+administer /etc/group and /etc/gshadow. It makes sense for group administrators to change the group password even if they are not a privileged user, and that doing this requires root permissions.
+398279   44 -rwsr-xr-x   1 root     root        41776 Nov  5  2016 /usr/bin/newgrp
+Change current group ID. It makes sense that a non-privileged user can change their current group ID, and that doing this requires root permissions
+535330 2356 -rwsr-xr-x   1 root     root      2409344 Apr 11  2018 /usr/bin/Xorg
+Xorg is a full featured X server. It makes sense that a non-privileged user can run a server, and that doing this requires root permissions
+419606   44 -rwsr-xr-x   1 root     root        44320 Aug 16 14:47 /usr/bin/mount
+mount a file system. It makes sense that a non-privileged user can mount a file system, and that doing this requires root permissions
+419621   32 -rwsr-xr-x   1 root     root        32184 Aug 16 14:47 /usr/bin/su
+Change user ID. It makes sense that a non-privileged user can change to a superuser with the right credentials, and that doing this requires root permissions
+419625   32 -rwsr-xr-x   1 root     root        32048 Aug 16 14:47 /usr/bin/umount
+Unmount a filesystem. It makes sense that a non-privileged user can unmount a filesystem, and that doing this requires root permissions
+619063   60 -rwsr-xr-x   1 root     root        57576 Apr 10  2018 /usr/bin/crontab
+Edit crontab entries. It makes sense that a non-privileged user can create crontab entries if allowed, and that scheduling tasks requires root permissions.
+419906   28 -rwsr-xr-x   1 root     root        27680 Apr 10  2018 /usr/bin/pkexec
+Execute a program as another user. It makes sense that a non-privileged user can execute a program as a different user, and that doing this requires root permissions simular to su or ksu.
+836446   52 -rwsr-xr-x   1 root     root        52952 Apr 10  2018 /usr/bin/at
+Execute commands at a later time. It makes sense that a non-privileged user can schedule commands if authorized, and that doing this requires root permissions.
+818332  140 ---s--x--x   1 root     root       143248 Jun 27 14:03 /usr/bin/sudo
+Execute a command as the superuser. It makes sense that a non-privileged user can execute certain commands as the superuser, and that doing this requires root permissions
+33925170   12 -rwsr-xr-x   1 root     root        11216 Apr 10  2018 /usr/sbin/pam_timestamp_check
+Check to see if the default timestamp is valid. It makes sense that a non-privileged user can check the default timestamp, and that doing this requires root permissions.
+33925172   36 -rwsr-xr-x   1 root     root        36280 Apr 10  2018 /usr/sbin/unix_chkpwd
+verify the password of the current user, logs a security violation if run from the command line. This needs root permissions to check verify passwords and to check account information.
+34591928   40 -rws--x--x   1 root     root        40312 Jun  9  2014 /usr/sbin/userhelper
+Helper inferface to PAM. Provides a basic interface to change user password, gecos information, and shell to be implemented in a GUI wrapper. This needs root permissions to change password and user information.
+34302014    8 -rwxr-sr-x   1 root     root         7208 Aug 16 10:49 /usr/sbin/netreport
+Request notification of network inferface changes. This is the only sgid file listed. It makes sense for non-privileged users or programs to need network information and that root permissions are required for network information.
+34439554   12 -rwsr-xr-x   1 root     root        11376 Aug 16 10:49 /usr/sbin/usernetctl
+Allow a user to manipulate a network interface. It makes sense that users need to manage network interfaces and that root permissions are required for this.
+34822008  112 -rwsr-xr-x   1 root     root       113408 Apr 12  2018 /usr/sbin/mount.nfs
+Allows a user to mount a network file system. This needs suid for the same reasons as mount.
+67803316   16 -rwsr-xr-x   1 root     root        15432 Apr 10  2018 /usr/lib/polkit-1/polkit-agent-helper-1
+Polkit is an application-level toolkit for defining and handling the policy that allows unprivileged processes to speak to privileged processes. Presumably this is related, and throws an error if it is not setuid root.
+101607916   12 -rwsr-xr-x   1 root     root        11136 May 22  2017 /usr/libexec/kde4/kpac_dhcp_helper
+Provides proxy auto configuration to KDE. This is a helper needed to support DHCP connections. It is required to be setuid root or KDE breaks.
+34841218   52 -rwsr-xr-x   1 root     root        49600 Apr 11  2018 /usr/libexec/flatpak-bwrap
+flatpak is a utility for software deployement, package management, and application virtualization. At least one if not all of these would require root permissions.
+68273605   16 -rwsr-xr-x   1 root     root        15512 Jun 27 13:51 /usr/libexec/spice-gtk-x86_64/spice-client-glib-usb-acl-helper
+This is called to validate usb ACLs. To validate them it requires root permissions.
+34542715   16 -rwsr-xr-x   1 root     root        15440 Aug 16 11:35 /usr/libexec/qemu-bridge-helper
+This allows access to a virtual server, presumably it needs root premissions to do that simular to mount.nfs.
+

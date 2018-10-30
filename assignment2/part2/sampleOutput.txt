@@ -1,0 +1,13 @@
+gcc -lm -o decipherPseudoID decipherPseudoID.c
+./decipherPseudoID 1045852 0 10
+868762 0
+868764 1
+868766 2
+868768 3
+868770 4
+868772 5
+868774 6
+868776 7
+868778 8
+868780 9
+868782 10
