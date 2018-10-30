@@ -12,15 +12,20 @@ read() into buffer, scan buffer, keep track of lines and words.*/
 #define BSIZE 4000 /*enough buffer for 4k chars*/
 
 void scan(int fid); /*load and scan info from a file*/
-void usage(); /*print usage information*/
+void usage(void); /*print usage information*/
 void myPrint(char* toPrint); /*print data modeled from example projects. */
 /* Global Vars */
 char fileBuf[BSIZE + 1];
 int linesOfText=0;
 int wordsNo=0;
+char* test;
 int main(int argc, char* argv[]){
 	int i;
 	int fid;
+	if(argc <=1){
+		usage();
+		return 0;
+	}
 	for(i = 1; i < argc; i = i+1){
 		fid = open(argv[i], O_RDONLY);
 		if(fid < 0)
@@ -29,9 +34,8 @@ int main(int argc, char* argv[]){
 			scan(fid);
 	} 
 
-/*maybe try to concatenate?*/
-	print("Lines of text: " + linesOfText + "\n");
-	print("Words        : " + wordsNo + "n");
+	printf("Lines of Text: %i\n", linesOfText);
+	printf("Words        : %i\n", wordsNo);
 	return 0;
 }
 
@@ -51,10 +55,13 @@ void scan(int fid){
 			return;
 		for(i = 0; fileBuf[i] != '\0'; i++){
 			c = (char)fileBuf[i]; 
-			if(c == ' ' || c == '\n' || c == '\r' || c == '\t')
-				wordsNo++;
 			if(c == '\n')
 				linesOfText++;
+			if(c == ' ' || c == '\n' || c == '\r' || c == '\t')
+					wordsNo++;
 		}
 	}
+}
+void usage(){
+	printf("Usage: ./ccountln source1.c [source2.h] ...\n");
 }
