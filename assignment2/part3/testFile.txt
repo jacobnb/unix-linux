@@ -1,11 +1,3 @@
-this file is here so that the program can count the number
-of text lines and words in the filename(s)
-Here are some more lines so that I can see how many chars are read in <37
-38 Here are another ten words for you to read
-48 Here are another ten words for you to read
-58 Here are another ten words for you to read
-68 Here are another ten words for you to read
-78 Here are another ten words for you to read
-88 Here are another ten words for you to read
-98 Here are another ten words for you to read
-108 Here are another ten words for you to read
+Word count and line count will be more than wc if file ends in a newline.
+Word count and line count are also innacurate on large files for some reason related to buffer size. My guess is that new line characters are getting counted twice after more data is read into the buffer, but i'm not sure why or how to fix this.
+

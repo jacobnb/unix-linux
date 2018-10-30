@@ -13,12 +13,11 @@ read() into buffer, scan buffer, keep track of lines and words.*/
 
 void scan(int fid); /*load and scan info from a file*/
 void usage(void); /*print usage information*/
-void myPrint(char* toPrint); /*print data modeled from example projects. */
 /* Global Vars */
 char fileBuf[BSIZE + 1];
 int linesOfText=0;
 int wordsNo=0;
-char* test;
+
 int main(int argc, char* argv[]){
 	int i;
 	int fid;
@@ -36,29 +35,36 @@ int main(int argc, char* argv[]){
 
 	printf("Lines of Text: %i\n", linesOfText);
 	printf("Words        : %i\n", wordsNo);
+	printf("ccountln terminates.\n");
 	return 0;
 }
 
-
-void myPrint(char* toPrint){
-	write(STDOUT_FILENO, toPrint, strlen(toPrint));
-	/*Don't need to free toPrint b/c it breaks the program*/
-}
 void scan(int fid){
 	ssize_t nbytes; /*for read()*/
 	int i;
 	char c; /*character to avoid accessing array element repeatedly. not sure if faster */
 	/*read() into buffer scan buffer, move to next*/
+	int previousCharNotSpace = 0;
 	while(1){ 	
 		nbytes = read(fid, fileBuf, BSIZE);
 		if(nbytes ==0)/*eof*/
 			return;
 		for(i = 0; fileBuf[i] != '\0'; i++){
 			c = (char)fileBuf[i]; 
+			/*Counts the number of lines, will be more than or equal to wc*/
 			if(c == '\n')
 				linesOfText++;
-			if(c == ' ' || c == '\n' || c == '\r' || c == '\t')
+
+			/*Counts the number of words, even accounting for multiple spaces does not perfectly match wc. On longer files this will be more than or equal to wc*/
+			if(c == ' ' || c == '\n' || c == '\r' || c == '\t'){
+				if(previousCharNotSpace){
 					wordsNo++;
+					previousCharNotSpace = 0;
+				}
+			}
+			else{
+				previousCharNotSpace = 1;
+			}
 		}
 	}
 }
